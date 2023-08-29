@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import TextInput from './../TextInput/TextInput';
 import Select from './../Select/Select';
@@ -23,18 +24,18 @@ const CurrencyForm = ({ action }) => {
     <form onSubmit={handleSubmit} className={styles.form}>
       <label>
         <span>Amount:</span>
-        <TextInput type="number" value={amount} onChange={e => setAmount(e.target.value)} />
+        <TextInput data-testid="amount" type="number" value={amount} onChange={e => setAmount(e.target.value)} />
       </label>
       <label>
         <span>From</span>
-        <Select onChange={e => setFrom(e.target.value)}>
+        <Select data-testid="from" onChange={e => setFrom(e.target.value)}>
           <option value="PLN">PLN</option>
           <option value="USD">USD</option>
         </Select>
       </label>
       <label>
         <span>To</span>
-        <Select onChange={e => setTo(e.target.value)}>
+        <Select data-testid="to" onChange={e => setTo(e.target.value)}>
           <option value="PLN">PLN</option>
           <option value="USD">USD</option>
         </Select>

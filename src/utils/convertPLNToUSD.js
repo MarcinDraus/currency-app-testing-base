@@ -1,3 +1,4 @@
+
 export const convertPLNToUSD = (PLN) => {
 
   if(typeof PLN === "string" ){
@@ -11,8 +12,6 @@ export const convertPLNToUSD = (PLN) => {
       PLN===null) {
     return 'Error'
   }
-
-
 
   const PLNtoUSD = PLN / 3.5;
   const formatter = new Intl.NumberFormat('en-US', {
