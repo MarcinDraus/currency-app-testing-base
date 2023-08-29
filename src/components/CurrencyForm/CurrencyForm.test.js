@@ -1,10 +1,10 @@
 
-
-
+import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
-import CurrencyForm from './CurrencyForm.js';
+import  CurrencyForm  from './CurrencyForm.js';
 import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 describe('Component CurrencyForm', () => {
   it('should render without crashing', () => {
@@ -22,7 +22,7 @@ describe('Component CurrencyForm', () => {
 
   for (const testCase of testCases) {
 
-      it('should run action callback with proper data on form submit', () => {
+      it('should run action callback with proper data on form submit', async () => {
       const action = jest.fn();
 
       // render component
@@ -41,9 +41,12 @@ describe('Component CurrencyForm', () => {
       userEvent.type(amountField, testCase.amount);
       userEvent.selectOptions(fromField, testCase.from);
       userEvent.selectOptions(toField, testCase.to);
+      await userEvent.type(amountField, testCase.amount);
+      await userEvent.selectOptions(fromField, testCase.from);
+      await userEvent.selectOptions(toField, testCase.to);
 
-      // simulate user click on "convert" button
-      userEvent.click(submitButton);
+      await userEvent.click(submitButton);
+      
 
       // check if action callback was called once and with proper argument
       expect(action).toHaveBeenCalledTimes(1);
