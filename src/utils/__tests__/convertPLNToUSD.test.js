@@ -9,10 +9,10 @@ describe('ConvertPLNtoUSD', () => {
     expect(convertPLNToUSD(12)).toBe('$3.43');
   });
   it('should return NaN when input is text', () => {
-    expect(convertPLNToUSD('21')).toBeNaN();
-    expect(convertPLNToUSD('abc')).toBeNaN();
-    expect(convertPLNToUSD('-101')).toBeNaN();
-    expect(convertPLNToUSD('-10ddf3')).toBeNaN();
+    expect(convertPLNToUSD('123')).toBeNaN();
+    expect(convertPLNToUSD('abd')).toBeNaN();
+    expect(convertPLNToUSD('-10101')).toBeNaN();
+    expect(convertPLNToUSD('-90xyz3')).toBeNaN();
     expect(convertPLNToUSD('')).toBeNaN();
   })
   it('should return NaN when input is empty', () => {
