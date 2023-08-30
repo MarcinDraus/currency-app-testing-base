@@ -6,53 +6,49 @@ import userEvent from '@testing-library/user-event';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
+
 describe('Component CurrencyForm', () => {
-  it('should render without crashing', () => {
-    render(<CurrencyForm action={() => {}} />);
-  });
+	it('should render without crashing', () => {
+		render(<CurrencyForm action={() => {}} />);
+	});
 
+	it('should run action callback with proper data on form submit', () => {
+		const testCases = [
+			{ amount: '100', from: 'PLN', to: 'USD' },
+			{ amount: '20', from: 'USD', to: 'PLN' },
+			{ amount: '200', from: 'PLN', to: 'USD' },
+			{ amount: '345', from: 'USD', to: 'PLN' },
+		];
+		for (const testObject of testCases) {
+			const action = jest.fn();
 
-  const testCases = [
-    { amount: '100', from: 'PLN', to: 'USD' },
-    { amount: '20', from: 'USD', to: 'PLN' },
-    { amount: '200', from: 'PLN', to: 'USD' },
-    { amount: '345', from: 'USD', to: 'PLN' },
-  ];
+			// render component
+			render(<CurrencyForm action={action} />);
 
+			// find “convert” button
+			const submitButton = screen.getByText('Convert');
 
-  for (const testCase of testCases) {
+			// check if action callback was called once
+			const amountInput = screen.getByTestId('amount');
+			const fromField = screen.getByTestId('from');
+			const toField = screen.getByTestId('to');
 
-      it('should run action callback with proper data on form submit', async () => {
-      const action = jest.fn();
+			// set test values to fields
+			userEvent.type(amountInput, testObject.amount);
+			userEvent.selectOptions(fromField, testObject.from);
+			userEvent.selectOptions(toField, testObject.to);
 
-      // render component
-      render(<CurrencyForm action={action} />);
+			// simulate user click on "convert" button
+			userEvent.click(submitButton);
 
-      // find “convert” button
-      const submitButton = screen.getByText('Convert');
-
-      // find fields element
-
-      const amountField = screen.getByTestId('amount');
-      const fromField = screen.getByTestId('from');
-      const toField = screen.getByTestId('to');
-
-      // set test values to fields
-      userEvent.type(amountField, testCase.amount);
-      userEvent.selectOptions(fromField, testCase.from);
-      userEvent.selectOptions(toField, testCase.to);
-      await userEvent.type(amountField, testCase.amount);
-      await userEvent.selectOptions(fromField, testCase.from);
-      await userEvent.selectOptions(toField, testCase.to);
-
-      await userEvent.click(submitButton);
-      
-
-      // check if action callback was called once and with proper argument
-      expect(action).toHaveBeenCalledTimes(1);
-      expect(action).toHaveBeenCalledWith({ amount: parseInt(testCase.amount), from: testCase.from, to: testCase.to });
-
-    }) 
-    cleanup();
-  }
+			expect(action).toHaveBeenCalledTimes(1);
+			expect(action).toHaveBeenCalledWith({
+				amount: parseInt(testObject.amount),
+				from: testObject.from,
+				to: testObject.to,
+			});
+			cleanup();
+		}
+	});
 });
+
